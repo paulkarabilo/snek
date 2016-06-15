@@ -1,6 +1,7 @@
 module Snek exposing (main)
 
-import Html exposing (span, div, text)
+import Html exposing (..)
+import Html.Attributes exposing (..)
 import Html.App as App
 import Keyboard
 
@@ -11,49 +12,19 @@ type alias Coord = {
 
 type Direction = Up | Down | Left | Right
 
-type alias Snek = {
-  body: List Coord
-}
-
-snek : Snek
-snek = {
-    body = []
-  }
-
-type alias Field = {
-  cells: List Coord
-}
-
-field : Field
-field = {
-    cells = []
-  }
-
-type alias Rabbit = {
-  coord: Coord
-}
-
-rabbit : Rabbit
-rabbit = {
-    coord = {
-      x = 0,
-      y = 0
-    }
-  }
-
 type alias Model = {
   dir: Direction,
-  field: Field,
-  snek: Snek,
-  rabbit: Rabbit
+  field: List Coord,
+  snek: List Coord,
+  rabbit: Coord
 }
 
 model : Model
 model = {
     dir = Left,
-    field = field,
-    snek = snek,
-    rabbit = rabbit
+    field = List.concatMap (\x -> List.map (\y -> {x = x, y = y}) [0..9]) [0..9],
+    snek = [{x = 5, y = 5}, {x = 5, y = 6}, {x = 5, y = 7}],
+    rabbit = {x = 3, y = 4}
   }
 
 init : (Model, Cmd Action)
@@ -109,6 +80,13 @@ dirToStr dir =
     Left -> "Left"
     Right -> "Right"
 
-view : Model -> Html.Html Action
+field2html : Coord -> Html Action
+field2html p =
+  div [class "cell", style [("float", "left"), ("width", "50px"), ("height", "50px")]] [text (toString p.x ++ ", " ++ toString p.y)]
+
+view : Model -> Html Action
 view model =
-  span [] [text (dirToStr model.dir)]
+  div [class "snek"] [
+    div [] [text (dirToStr model.dir)],
+    div [class "cells"] (List.map (field2html) (model.field))
+  ]
