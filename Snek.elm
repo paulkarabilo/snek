@@ -12,39 +12,103 @@ type alias Coord = {
 type Direction = Up | Down | Left | Right
 
 type alias Snek = {
-  body: List Coord,
-  dir: Direction
+  body: List Coord
 }
+
+snek : Snek
+snek = {
+    body = []
+  }
 
 type alias Field = {
   cells: List Coord
 }
 
+field : Field
+field = {
+    cells = []
+  }
+
 type alias Rabbit = {
   coord: Coord
 }
 
+rabbit : Rabbit
+rabbit = {
+    coord = {
+      x = 0,
+      y = 0
+    }
+  }
+
 type alias Model = {
+  dir: Direction,
   field: Field,
   snek: Snek,
   rabbit: Rabbit
 }
 
+model : Model
+model = {
+    dir = Left,
+    field = field,
+    snek = snek,
+    rabbit = rabbit
+  }
 
-main = App.beginnerProgram {model = "", view = view, update = update}
+init : (Model, Cmd Action)
+init =
+  (model, Cmd.none)
 
-type Msg = GoUp | GoDown | GoLeft | GoRight
 
-update msg model =
-  case msg of
-    GoUp ->
-      "Up"
-    GoDown ->
-      "Down"
-    GoLeft ->
-      "Left"
-    GoRight ->
-      "Right"
+keyChange : Keyboard.KeyCode -> Maybe Direction
+keyChange keyCode =
+  case keyCode of
+    37 -> Just Left
+    39 -> Just Right
+    38 -> Just Up
+    40 -> Just Down
+    _ -> Nothing
 
+subscriptions _ =
+  [Keyboard.downs (keyChange >> KeyPress)]
+  |> Sub.batch
+
+
+main : Program Never
+
+main = App.program
+  {
+    init = init,
+    view = view,
+    update = update,
+    subscriptions = subscriptions
+  }
+
+type Action = KeyPress (Maybe Direction) | Restart | Exit
+
+update : Action -> Model -> (Model, Cmd Action)
+update action model =
+    case action of
+      KeyPress d ->
+        case d of
+          Nothing ->
+            model ! []
+          Just di ->
+            {model | dir = di} ! []
+      Restart ->
+        model ! []
+      Exit ->
+        model ! []
+
+dirToStr : Direction -> String
+dirToStr dir =
+  case dir of
+    Up -> "Up"
+    Down -> "Down"
+    Left -> "Left"
+    Right -> "Right"
+
+view : Model -> Html.Html Action
 view model =
-  span [] [text "Hello"]
+  span [] [text (dirToStr model.dir)]
