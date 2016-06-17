@@ -64,6 +64,16 @@ main = App.program
 
 type Action = KeyPress (Maybe Direction) | Tick Float | Restart | Exit
 
+normalize : Int -> Int -> Int
+normalize val size =
+  if val < 0 then
+    size - 1
+  else if val > size - 1 then
+    0
+  else
+    val
+
+
 nextHead : Coord -> Direction -> List Coord -> Coord
 nextHead head dir field =
   let
@@ -73,24 +83,25 @@ nextHead head dir field =
   in
     case dir of
       Up ->
-        {x = hx, y = if hy == 0 then size - 1 else hy - 1}
+        {x = hx, y = normalize (hy - 1) size}
       Down ->
-        {x = hx, y = if hy == size - 1 then 0 else hy + 1}
+        {x = hx, y = normalize (hy + 1) size}
       Left ->
-        {x = if hx == 0 then size - 1 else hx - 1, y = hy}
+        {x = normalize (hx - 1) size, y = hy}
       Right ->
-        {x = if hx == size - 1 then 0 else hx + 1, y = hy}
+        {x = normalize (hx + 1) size, y = hy}
 
 moveSnek : (List Coord) -> Direction -> (List Coord) -> (List Coord)
 moveSnek snek dir field =
   let
     head = List.head snek
+    len = List.length snek
   in
     case head of
       Nothing ->
         snek
       Just h ->
-        (nextHead h dir field) :: (List.take ((List.length snek) - 1) snek)
+        nextHead h dir field :: List.take (len - 1) snek
 
 moveModel : Model -> Float -> Model
 moveModel model tick =
@@ -112,8 +123,9 @@ update action model =
         let
           delta = 1000 / logBase 2 (model.snek |> List.length |> toFloat)
           last = model.lastTick
+          frame = (f - last) > delta
         in
-          (if ((f - last) > delta) then (moveModel model f) else model) ! []
+          (if frame then moveModel model f else model) ! []
       Restart ->
         model ! []
       Exit ->
