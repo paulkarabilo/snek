@@ -1,7 +1,7 @@
-module Model.Snek exposing (move)
+module Model.Snek exposing (move, eat)
 
 import Model.Coord exposing (Coord)
-import Model.Direction exposing (Direction(..))
+import Model.Direction exposing (Direction(..), inverse)
 
 normalize : Int -> Int -> Int
 normalize val size =
@@ -29,7 +29,8 @@ nextHead head dir field =
       Right ->
         {x = normalize (hx + 1) size, y = hy}
 
-move : (List Coord) -> Direction -> (List Coord) -> (List Coord)
+
+move : List Coord -> Direction -> List Coord -> List Coord
 move snek dir field =
   let
     head = List.head snek
@@ -40,3 +41,15 @@ move snek dir field =
         snek
       Just h ->
         nextHead h dir field :: List.take (len - 1) snek
+
+eat: List Coord -> Direction -> List Coord -> List Coord
+eat snek dir field =
+  let
+    tail = snek |> List.reverse |> List.head
+    invdir = inverse dir
+  in
+    case tail of
+      Nothing ->
+        snek
+      Just t ->
+        List.append snek [nextHead t invdir field]

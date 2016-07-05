@@ -12,9 +12,9 @@ render p =
     class "cell",
     style [
       ("position", "absolute"),
-      ("width", "50px"),
-      ("height", "50px"),
-      ("left", (toString (p.x * 50)) ++ "px"),
-      ("top", (toString (p.y * 50)) ++ "px")
+      ("width", "10px"),
+      ("height", "10px"),
+      ("left", (toString (p.x * 10)) ++ "px"),
+      ("top", (toString (p.y * 10)) ++ "px")
     ]
   ] []

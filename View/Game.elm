@@ -21,8 +21,8 @@ render model =
         ("position", "absolute"),
         ("left", "0px"),
         ("top", "30px"),
-        ("width", "500px"),
-        ("height", "500px")
+        ("width", "100px"),
+        ("height", "100px")
       ]
     ] (List.concat [
       (List.map Snek.render model.snek),
