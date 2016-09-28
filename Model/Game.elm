@@ -24,13 +24,10 @@ model = {
     seed = Random.initialSeed 42
   }
 
-
-
 getFreeCells : List Coord -> List Coord -> List Coord
 getFreeCells field snek =
   let
-    head = List.head field
-    tail = List.tail field
+    (head, tail) = (List.head field, List.tail field)
   in
     case head of
       Nothing ->
@@ -78,6 +75,6 @@ move model tick =
               Nothing ->
                 { model | lastTick = tick, snek = Snek.eat nextSnek model.dir model.field }
               Just r ->
-                { model | lastTick = tick, snek = Snek.eat nextSnek model.dir model.field, rabbit = r }
+                { model | lastTick = tick, snek = Snek.eat nextSnek model.dir model.field, rabbit = r, seed = seed }
         else
           { model | lastTick = tick, snek = nextSnek }
