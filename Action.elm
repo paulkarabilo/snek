@@ -12,14 +12,14 @@ delta snek =
 
 update : Action -> Model -> (Model, Cmd Action)
 update action model =
-    case action of
-      KeyPress d ->
-        case d of
-          Nothing -> model ! []
-          Just di -> {model | dir = di} ! []
-      Tick f ->
-        (if (f - model.lastTick) > (delta model.snek) then move model f else model) ! []
-      Restart ->
-        model ! []
-      Exit ->
-        model ! []
+  case action of
+    KeyPress d ->
+      case d of
+        Nothing -> model ! []
+        Just di -> {model | dir = di} ! []
+    Tick f ->
+      (if (f - model.lastTick) > (delta model.snek) then move model f else model) ! []
+    Restart ->
+      model ! []
+    Exit ->
+      model ! []

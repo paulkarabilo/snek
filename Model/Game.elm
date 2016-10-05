@@ -31,23 +31,17 @@ model = {
 
 getFreeCells : List Coord -> List Coord -> List Coord
 getFreeCells field snek =
-  let
-    (head, tail) = (List.head field, List.tail field)
-  in
-    case head of
-      Nothing ->
-        []
-      Just h ->
-        if contains snek h then
-          case tail of
-            Nothing -> []
-            Just t -> t
-        else
-          case tail of
-            Nothing ->
-              h :: []
-            Just t ->
-              h :: getFreeCells t snek
+  case List.head field of
+    Nothing -> []
+    Just h ->
+      if contains snek h then
+        case List.tail field of
+          Nothing -> []
+          Just t -> t
+      else
+        case List.tail field of
+          Nothing -> h :: []
+          Just t -> h :: getFreeCells t snek
 
 nextRabbit : List Coord -> List Coord -> Random.Seed -> (Maybe Coord, Random.Seed)
 nextRabbit field snek seed =
@@ -63,13 +57,12 @@ move : Model -> Float -> Model
 move model tick =
   let
     nextSnek = Snek.move model.snek model.dir model.field
-    rabbit = model.rabbit
   in
     case List.head nextSnek of
       Nothing ->
         { model | lastTick = tick, snek = nextSnek }
       Just h ->
-        if eq h rabbit then
+        if eq h model.rabbit then
           let
             (rabbit, seed) = nextRabbit model.field model.snek model.seed
           in
