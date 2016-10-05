@@ -1,18 +1,17 @@
-module Model.Coord exposing (Coord, equals, contains)
+module Model.Coord exposing (Coord, eq, contains)
 
 type alias Coord = {
   x: Int,
   y: Int
 }
 
-equals : Coord -> Coord -> Bool
-equals c1 c2 =
+eq : Coord -> Coord -> Bool
+eq c1 c2 =
   c1.x == c2.x && c1.y == c2.y
 
 contains : List Coord -> Coord -> Bool
-contains l a =
-  let
-    i = List.filterMap (\n -> if equals n a then Just True else Nothing) l
-    len = List.length i
-  in
-    len > 0
+contains list a =
+  (list
+    |> List.filterMap (\i -> if (eq i a) then Just True else Nothing)
+    |> List.length) > 0
+

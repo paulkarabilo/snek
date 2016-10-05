@@ -1,11 +1,11 @@
 module Subscriptions exposing (subscriptions)
 
-import Time
-import Keyboard
+import Time exposing (every, millisecond)
+import Keyboard exposing (KeyCode, downs)
 import Model.Direction exposing (Direction(..))
 import Action exposing (Action(..))
 
-keyChange : Keyboard.KeyCode -> Maybe Direction
+keyChange : KeyCode -> Maybe Direction
 keyChange keyCode =
   case keyCode of
     37 -> Just Left
@@ -15,8 +15,5 @@ keyChange keyCode =
     _ -> Nothing
 
 subscriptions _ =
-  [
-    Keyboard.downs (keyChange >> KeyPress),
-    Time.every (16.667 * Time.millisecond) Tick
-  ]
+  [downs (keyChange >> KeyPress), every (16.667 * millisecond) Tick]
   |> Sub.batch
