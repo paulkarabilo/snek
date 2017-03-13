@@ -12,9 +12,11 @@ normalize val size =
   else
     val
 
+
 fieldSize : List Coord -> Int
 fieldSize field =
   field |> List.length |> toFloat |> sqrt |> round
+
 
 nextHead : Coord -> Direction -> List Coord -> Coord
 nextHead h dir field =
@@ -30,6 +32,7 @@ move snek dir field =
   case List.head snek of
     Nothing -> snek
     Just h -> nextHead h dir field :: List.take (List.length snek - 1) snek
+
 
 eat: List Coord -> Direction -> List Coord -> List Coord
 eat snek dir field =

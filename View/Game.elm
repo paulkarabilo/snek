@@ -13,8 +13,6 @@ import Model.Game exposing (Model)
 render : Model -> Html Action
 render model =
   div [class "snek"] [
-    div [] [text (toString model.dir)],
-    div [] [text (toString model.lastTick)],
     div [
       class "cells",
       style [

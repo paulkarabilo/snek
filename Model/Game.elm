@@ -18,16 +18,18 @@ type alias Model = {
   seed: Random.Seed
 }
 
+
 model : Model
 model = {
     dir = Left,
     fieldSize = fieldSize,
-    field = List.concatMap (\x -> List.map (\y -> {x = x, y = y}) [0..fieldSize - 1]) [0..fieldSize - 1],
+    field = List.concatMap (\x -> List.map (\y -> {x = x, y = y}) (List.range 0 (fieldSize - 1))) (List.range 0 (fieldSize - 1)),
     snek = [{x = 5, y = 5}, {x = 6, y = 5}, {x = 7, y = 5}],
     rabbit = {x = 3, y = 4},
     lastTick = 0,
     seed = Random.initialSeed 42
   }
+
 
 getFreeCells : List Coord -> List Coord -> List Coord
 getFreeCells field snek =
@@ -43,6 +45,7 @@ getFreeCells field snek =
           Nothing -> h :: []
           Just t -> h :: getFreeCells t snek
 
+
 nextRabbit : List Coord -> List Coord -> Random.Seed -> (Maybe Coord, Random.Seed)
 nextRabbit field snek seed =
   let
@@ -50,7 +53,6 @@ nextRabbit field snek seed =
     (nextR, nextSeed) = Random.step (Random.int 0 ((List.length freeCells) - 1)) seed
   in
     (List.head (List.drop nextR freeCells), nextSeed)
-
 
 
 move : Model -> Float -> Model

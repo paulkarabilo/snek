@@ -6,9 +6,11 @@ import Model.Coord exposing (Coord)
 
 type Action = KeyPress (Maybe Direction) | Tick Float | Restart | Exit
 
+
 delta: List Coord -> Float
 delta snek =
   snek |> List.length |> toFloat |> logBase 2
+
 
 update : Action -> Model -> (Model, Cmd Action)
 update action model =
