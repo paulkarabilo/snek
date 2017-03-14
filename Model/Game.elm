@@ -15,7 +15,8 @@ type alias Model = {
   snek: List Coord,
   rabbit: Coord,
   lastTick: Float,
-  seed: Random.Seed
+  seed: Random.Seed,
+  gameOver: Bool
 }
 
 
@@ -27,7 +28,8 @@ model = {
     snek = [{x = 5, y = 5}, {x = 6, y = 5}, {x = 7, y = 5}],
     rabbit = {x = 3, y = 4},
     lastTick = 0,
-    seed = Random.initialSeed 42
+    seed = Random.initialSeed 42,
+    gameOver = False
   }
 
 
@@ -64,7 +66,9 @@ move model tick =
       Nothing ->
         { model | lastTick = tick, snek = nextSnek }
       Just h ->
-        if eq h model.rabbit then
+        if Snek.check nextSnek then
+          { model | gameOver = True }
+        else if eq h model.rabbit then
           let
             (rabbit, seed) = nextRabbit model.field model.snek model.seed
           in

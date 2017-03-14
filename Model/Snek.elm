@@ -1,6 +1,6 @@
-module Model.Snek exposing (move, eat)
+module Model.Snek exposing (move, eat, check)
 
-import Model.Coord exposing (Coord)
+import Model.Coord exposing (Coord, eq)
 import Model.Direction exposing (Direction(..), inverse)
 
 normalize : Int -> Int -> Int
@@ -17,6 +17,18 @@ fieldSize : List Coord -> Int
 fieldSize field =
   field |> List.length |> toFloat |> sqrt |> round
 
+check: List Coord -> Bool
+check snek =
+  let
+    head = snek |> List.head
+    tail = snek |> List.tail
+  in
+    case head of
+      Nothing -> False
+      Just h ->
+        case tail of
+          Nothing -> False
+          Just t -> List.length (List.filter (\c -> eq c h) t) > 0
 
 nextHead : Coord -> Direction -> List Coord -> Coord
 nextHead h dir field =

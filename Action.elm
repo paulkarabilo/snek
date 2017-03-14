@@ -9,7 +9,7 @@ type Action = KeyPress (Maybe Direction) | Tick Float | Restart | Exit
 
 delta: List Coord -> Float
 delta snek =
-  snek |> List.length |> toFloat |> logBase 2
+  (snek |> List.length |> toFloat |> logBase 2) * 100
 
 
 update : Action -> Model -> (Model, Cmd Action)

@@ -15,5 +15,8 @@ keyChange keyCode =
     _ -> Nothing
 
 subscriptions _ =
-  [downs (keyChange >> KeyPress), every (16.667 * millisecond) Tick]
+  [
+    downs (keyChange >> KeyPress),
+    every (millisecond * 16.667) Tick
+  ]
   |> Sub.batch
