@@ -23,7 +23,7 @@ update action model =
         Nothing -> model ! []
         Just di ->
           if invalidDir di model.dir then model ! []
-          else {model | dir = di} ! []
+          else move {model | dir = di} (model.lastTick + 1) ! []
     Tick f ->
       (if (f - model.lastTick) > (delta model.snek) then move model f else model) ! []
     Restart ->
