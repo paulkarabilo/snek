@@ -16,10 +16,4 @@ init =
 
 
 main : Program Never Model Action
-main = Html.program
-  {
-    init = init,
-    view = Game.render,
-    update = update,
-    subscriptions = subscriptions
-  }
+main = Html.program { init = init, view = Game.render, update = update, subscriptions = subscriptions }

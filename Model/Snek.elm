@@ -5,12 +5,9 @@ import Model.Direction exposing (Direction(..), inverse)
 
 normalize : Int -> Int -> Int
 normalize val size =
-  if val < 0 then
-    size - 1
-  else if val > size - 1 then
-    0
-  else
-    val
+  if val < 0 then size - 1
+  else if val > size - 1 then 0
+  else val
 
 
 fieldSize : List Coord -> Int
