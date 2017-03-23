@@ -11,8 +11,7 @@ normalize val size =
 
 
 fieldSize : List Coord -> Int
-fieldSize field =
-  field |> List.length |> toFloat |> sqrt |> round
+fieldSize field = field |> List.length |> toFloat |> sqrt |> round
 
 check: List Coord -> Bool
 check snek =
