@@ -1,4 +1,4 @@
-module Model.Game exposing (Model, move, model)
+module Model.Game exposing (Model, move, model, restart)
 
 import Model.Direction exposing (Direction(..))
 import Model.Coord exposing (Coord, eq, contains)
@@ -19,19 +19,20 @@ type alias Model = {
   gameOver: Bool
 }
 
-
-model : Model
-model = {
+restart: Int -> Model
+restart initialSeed = {
     dir = Left,
     fieldSize = fieldSize,
     field = List.concatMap (\x -> List.map (\y -> {x = x, y = y}) (List.range 0 (fieldSize - 1))) (List.range 0 (fieldSize - 1)),
     snek = [{x = 5, y = 5}, {x = 6, y = 5}, {x = 7, y = 5}],
     rabbit = {x = 3, y = 4},
     lastTick = 0,
-    seed = Random.initialSeed 42,
+    seed = Random.initialSeed initialSeed,
     gameOver = False
   }
 
+model : Model
+model = restart 42
 
 getFreeCells : List Coord -> List Coord -> List Coord
 getFreeCells field snek =
